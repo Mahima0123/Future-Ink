@@ -1,0 +1,15 @@
+<div style="border:1px solid #ccc; padding:20px; margin-top:20px; border-radius:8px;">
+  <h2>Write a Letter to Your Future Self</h2>
+  <form (ngSubmit)="submitLetter()">
+    <label>Title:</label>
+    <input type="text" [(ngModel)]="title" name="title" required style="width:100%; margin-bottom:10px;">
+
+    <label>Body:</label>
+    <textarea [(ngModel)]="body" name="body" rows="4" required style="width:100%; margin-bottom:10px;"></textarea>
+
+    <label>Unlock Date:</label>
+    <input type="datetime-local" [(ngModel)]="unlock_at" name="unlock_at" required style="width:100%; margin-bottom:10px;">
+
+    <button type="submit" style="padding:10px 20px;">Save Letter</button>
+  </form>
+</div>
