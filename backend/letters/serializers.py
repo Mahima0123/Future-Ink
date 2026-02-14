@@ -21,9 +21,4 @@ class LetterSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user']
 
-class LetterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Letter
-        fields = ['id', 'user', 'title', 'body', 'created_at', 'unlock_at', 'unlocked', 'reflection', 'mood']
-        read_only_fields = ['id', 'user', 'created_at', 'unlocked']
 
