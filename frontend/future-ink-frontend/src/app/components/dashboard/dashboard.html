@@ -1,8 +1,47 @@
-<div style="max-width:600px; margin:auto; padding:20px;">
-  <h1>Future Ink Letters</h1>
-  <div *ngFor="let letter of letters" style="border:1px solid #ccc; padding:10px; margin-bottom:10px; border-radius:8px;">
-    <h3>{{ letter.title }}</h3>
-    <p>{{ letter.body }}</p>
-    <small>Unlocks at: {{ letter.unlock_at | date:'medium' }}</small>
+<div class="dashboard-container">
+
+  <h1>📬 Future Ink Letters</h1>
+
+  <!-- New Letter Form -->
+  <div class="letter-form-card">
+    <h2>✍️ Add New Letter</h2>
+    <form (ngSubmit)="submitLetter()" #letterForm="ngForm">
+
+      <input
+        type="text"
+        placeholder="Title"
+        [(ngModel)]="newLetter.title"
+        name="title"
+        required
+      />
+
+      <textarea
+        placeholder="Body"
+        [(ngModel)]="newLetter.body"
+        name="body"
+        rows="4"
+        required
+      ></textarea>
+
+      <input
+        type="datetime-local"
+        [(ngModel)]="newLetter.unlock_at"
+        name="unlock_at"
+        required
+      />
+
+      <button type="submit" [disabled]="letterForm.invalid">Submit Letter</button>
+    </form>
+    <div *ngIf="successMessage" class="success-msg">{{ successMessage }}</div>
   </div>
+
+  <!-- Letters List -->
+  <div class="letters-list">
+    <div *ngFor="let letter of letters" class="letter-card">
+      <h3>{{ letter.title }}</h3>
+      <p>{{ letter.body }}</p>
+      <small>Unlocks at: {{ letter.unlock_at | date:'medium' }}</small>
+    </div>
+  </div>
+
 </div>

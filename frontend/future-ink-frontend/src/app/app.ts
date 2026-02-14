@@ -14,9 +14,6 @@ import { LetterForm } from './components/letter-form/letter-form';
   imports: [
     RouterOutlet,
     CommonModule,
-    HttpClientModule,
-    Dashboard,
-    LetterForm
   ]
 })
 export class App {

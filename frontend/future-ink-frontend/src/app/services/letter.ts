@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Letter {
@@ -23,11 +23,26 @@ export class LetterService {
 
   constructor(private http: HttpClient) {}
 
+  /** Get all letters of logged-in user */
   getLetters(): Observable<Letter[]> {
-    return this.http.get<Letter[]>(this.apiUrl);
+    return this.http.get<Letter[]>(this.apiUrl, {
+      headers: this.authHeader()
+    });
   }
 
+  /** Add a new letter */
   addLetter(letter: Letter): Observable<Letter> {
-    return this.http.post<Letter>(this.apiUrl, letter);
+    return this.http.post<Letter>(this.apiUrl, letter, {
+      headers: this.authHeader()
+    });
+  }
+
+  /** Attach JWT token for authentication */
+  private authHeader(): { [header: string]: string } {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+    return {};
   }
 }
