@@ -1,6 +1,33 @@
-<h2>Register</h2>
+<div class="page">
 
-<input placeholder="Username" [(ngModel)]="form.username">
-<input type="password" [(ngModel)]="form.password">
+  <div class="register-card">
+    <h2>Future Ink</h2>
+    <p class="subtitle">Sign up to create new account</p>
 
-<button (click)="register()">Register</button>
+    <form (ngSubmit)="register()">
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="form.username"
+        name="username"
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="form.password"
+        name="password"
+        required
+      />
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p class="switch">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+  </div>
+
+</div>
