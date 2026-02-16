@@ -1,9 +1,38 @@
-<div class="auth-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <input placeholder="Username" [(ngModel)]="form.username" name="username" required>
-    <input type="password" placeholder="Password" [(ngModel)]="form.password" name="password" required>
-    <button type="submit">Login</button>
-  </form>
-  <p>Don't have an account? <a routerLink="/register">Register</a></p>
+<div class="page">
+
+  <div class="login-card">
+
+    <h2>Future Ink</h2>
+    <p class="subtitle">Sign in to your account</p>
+
+    <form (ngSubmit)="login()">
+
+      <input
+        type="text"
+        placeholder="Username"
+        [(ngModel)]="form.username"
+        name="username"
+        required
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="form.password"
+        name="password"
+        required
+      />
+
+      <button type="submit">Login</button>
+
+    </form>
+
+    <p class="switch">
+      Don’t have an account?
+      <a routerLink="/register" class="link-btn">Sign up</a>
+    </p>
+
+
+  </div>
+
 </div>
