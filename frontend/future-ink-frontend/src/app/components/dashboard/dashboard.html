@@ -1,47 +1,59 @@
-<div class="dashboard-container">
+<div class="dashboard">
 
-  <h1>📬 Future Ink Letters</h1>
+  <div class="content">
 
-  <!-- New Letter Form -->
-  <div class="letter-form-card">
-    <h2>✍️ Add New Letter</h2>
-    <form (ngSubmit)="submitLetter()" #letterForm="ngForm">
+    <h1 class="title">Future Ink</h1>
+    <p class="subtitle">Write today. Read tomorrow.</p>
 
-      <input
-        type="text"
-        placeholder="Title"
-        [(ngModel)]="newLetter.title"
-        name="title"
-        required
-      />
+    <!-- LETTER FORM -->
+    <div class="glass-card">
+      <h2>New Letter</h2>
 
-      <textarea
-        placeholder="Body"
-        [(ngModel)]="newLetter.body"
-        name="body"
-        rows="4"
-        required
-      ></textarea>
+      <form (ngSubmit)="submitLetter()" #letterForm="ngForm">
 
-      <input
-        type="datetime-local"
-        [(ngModel)]="newLetter.unlock_at"
-        name="unlock_at"
-        required
-      />
+        <input
+          type="text"
+          placeholder="Letter title"
+          [(ngModel)]="newLetter.title"
+          name="title"
+          required
+        />
 
-      <button type="submit" [disabled]="letterForm.invalid">Submit Letter</button>
-    </form>
-    <div *ngIf="successMessage" class="success-msg">{{ successMessage }}</div>
-  </div>
+        <textarea
+          placeholder="Write something meaningful..."
+          [(ngModel)]="newLetter.body"
+          name="body"
+          rows="5"
+          required
+        ></textarea>
 
-  <!-- Letters List -->
-  <div class="letters-list">
-    <div *ngFor="let letter of letters" class="letter-card">
-      <h3>{{ letter.title }}</h3>
-      <p>{{ letter.body }}</p>
-      <small>Unlocks at: {{ letter.unlock_at | date:'medium' }}</small>
+        <input
+          type="datetime-local"
+          [(ngModel)]="newLetter.unlock_at"
+          name="unlock_at"
+          required
+        />
+
+        <button type="submit" [disabled]="letterForm.invalid">
+          Save Letter
+        </button>
+
+      </form>
+
+      <div *ngIf="successMessage" class="success">
+        ✓ Letter saved to the future
+      </div>
     </div>
+
+    <!-- LETTERS -->
+    <div class="letters">
+      <div *ngFor="let letter of letters" class="letter-card">
+        <h3>{{ letter.title }}</h3>
+        <p>{{ letter.body }}</p>
+        <span>{{ letter.unlock_at | date:'medium' }}</span>
+      </div>
+    </div>
+
   </div>
 
 </div>
