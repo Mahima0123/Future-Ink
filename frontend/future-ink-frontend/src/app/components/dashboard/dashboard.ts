@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class Dashboard {
   letters: Letter[] = [];
   successMessage = '';
+  menuOpen = false;
 
   newLetter: Partial<Letter> = {
     title: '',
@@ -37,6 +38,10 @@ export class Dashboard {
     if (typeof window !== 'undefined') {
       this.loadLetters();
     }
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
 
@@ -62,5 +67,9 @@ export class Dashboard {
         alert('Failed to submit letter');
       }
     });
+  }
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

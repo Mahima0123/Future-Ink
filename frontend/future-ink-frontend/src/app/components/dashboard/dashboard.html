@@ -1,8 +1,19 @@
 <div class="dashboard">
+  <!-- TOP NAVBAR -->
+  <div class="topbar">
 
+    <div class="logo">Future Ink</div>
+
+    <div class="user-menu" (click)="toggleMenu()">
+      <div class="avatar">👤</div>
+
+      <div class="dropdown" *ngIf="menuOpen">
+        <button (click)="logout()">Logout</button>
+      </div>
+    </div>
+
+  </div>
   <div class="content">
-
-    <h1 class="title">Future Ink</h1>
     <p class="subtitle">Write today. Read tomorrow.</p>
 
     <!-- LETTER FORM -->

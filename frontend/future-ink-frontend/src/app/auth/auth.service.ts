@@ -19,19 +19,28 @@ export class AuthService {
     return this.http.post(`${this.API_URL}/token/`, data);
   }
 
-  saveToken(token: string) {
-    localStorage.setItem('token', token);
+  saveToken(access: string, refresh: string) {
+    localStorage.setItem('token', access);
+    localStorage.setItem('refresh', refresh);
   }
 
   getToken() {
     return localStorage.getItem('token');
   }
 
-  logout() {
-    localStorage.removeItem('token');
-  }
+  logout(): Observable<any> {
+    const refresh = localStorage.getItem('refresh');
 
+    return this.http.post(`${this.API_URL}/logout/`, {
+      refresh: refresh
+    });
+  }
+  clearSession() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh');
+  }
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
 }

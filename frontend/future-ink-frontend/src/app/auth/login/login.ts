@@ -23,7 +23,7 @@ export class LoginComponent {
   login() {
     this.auth.login(this.form).subscribe({
       next: (res: any) => {
-        this.auth.saveToken(res.access); // save JWT token
+        this.auth.saveToken(res.access, res.refresh); // save JWT token
         this.router.navigate(['/dashboard']); // redirect after login
       },
       error: () => alert('Login failed. Please check your credentials.')
