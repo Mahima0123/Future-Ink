@@ -4,12 +4,19 @@
 
     <div class="logo">Future Ink</div>
 
-    <div class="user-menu" (click)="toggleMenu()">
-      <div class="avatar">👤</div>
+    <div class="user-menu">
+
+      <button class="view-btn"
+              (click)="openUnlockedLetters()">
+        View Unlocked Letters
+      </button>
+
+      <div class="avatar" (click)="toggleMenu()">👤</div>
 
       <div class="dropdown" *ngIf="menuOpen">
         <button (click)="logout()">Logout</button>
       </div>
+
     </div>
 
   </div>
@@ -57,12 +64,32 @@
     </div>
 
     <!-- LETTERS -->
-    <div class="letters">
-      <div *ngFor="let letter of letters" class="letter-card">
-        <h3>{{ letter.title }}</h3>
-        <p>{{ letter.body }}</p>
-        <span>{{ letter.unlock_at | date:'medium' }}</span>
+    <div class="modal-overlay" *ngIf="showUnlockedModal">
+
+      <div class="modal-card">
+
+        <div class="modal-header">
+          <h2>Unlocked Letters ✨</h2>
+          <button class="close-btn"
+                  (click)="closeUnlockedLetters()">✕</button>
+        </div>
+
+        <div class="modal-content">
+
+          <div *ngFor="let letter of letters" class="letter-card">
+            <h3>{{ letter.title }}</h3>
+            <p>{{ letter.body }}</p>
+            <span>{{ letter.unlock_at | date:'medium' }}</span>
+          </div>
+
+          <p *ngIf="letters.length === 0" class="empty">
+            No letters unlocked yet 🌙
+          </p>
+
+        </div>
+
       </div>
+
     </div>
 
   </div>

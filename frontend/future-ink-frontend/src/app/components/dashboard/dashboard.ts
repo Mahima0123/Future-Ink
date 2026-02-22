@@ -16,6 +16,8 @@ export class Dashboard {
   letters: Letter[] = [];
   successMessage = '';
   menuOpen = false;
+  showUnlockedModal = false;
+  currentView: 'write' | 'unlocked' = 'write';
 
   newLetter: Partial<Letter> = {
     title: '',
@@ -71,5 +73,30 @@ export class Dashboard {
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  openUnlockedLetters() {
+    this.showUnlockedModal = true;
+    this.loadUnlockedLetters();
+  }
+
+  closeUnlockedLetters() {
+    this.showUnlockedModal = false;
+  }
+  loadUnlockedLetters() {
+    this.letterService.getLetters().subscribe({
+      next: (data) => {
+        this.letters = data;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+  showUnlockedLetters() {
+    this.currentView = 'unlocked';
+    this.loadUnlockedLetters();
+  }
+
+  showWriteView() {
+    this.currentView = 'write';
   }
 }
