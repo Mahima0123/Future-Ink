@@ -4,9 +4,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
+
 from django.contrib.auth.models import User
+from django.utils import timezone
+
 from .models import Letter
-from .serializers import LetterSerializer, UserRegisterSerializer
+from .serializers import (
+    LetterSerializer,
+    UserRegisterSerializer,
+)
 
 
 # ---------- REGISTER ----------
@@ -43,8 +49,12 @@ class LetterListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # user only sees their letters
-        return Letter.objects.filter(user=self.request.user)
+        now = timezone.now()
+
+        return Letter.objects.filter(
+            user=self.request.user,
+            unlock_at__lte=now   # only unlocked letters
+        )
 
     def perform_create(self, serializer):
         # automatically attach logged-in user
