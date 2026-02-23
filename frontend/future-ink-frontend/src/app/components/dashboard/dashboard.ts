@@ -18,6 +18,7 @@ export class Dashboard {
   menuOpen = false;
   showUnlockedModal = false;
   currentView: 'write' | 'unlocked' = 'write';
+  modalType: 'locked' | 'unlocked' = 'unlocked';
   selectedLetterId: number | null = null;
   reflectionText = '';
   selectedMood = '';
@@ -79,8 +80,26 @@ export class Dashboard {
   }
 
   openUnlockedLetters() {
+    this.modalType = 'unlocked';
     this.showUnlockedModal = true;
-    this.loadUnlockedLetters();
+
+    this.letterService.getUnlockedLetters().subscribe({
+      next: (data) => this.letters = data,
+      error: (err) => console.error(err)
+    });
+  }
+
+  openLockedLetters() {
+    this.modalType = 'locked';
+    this.showUnlockedModal = true;
+
+    this.letterService.getLetters().subscribe({
+      next: (data) => {
+        // extra safety filter on frontend
+        this.letters = data.filter(l => !l.unlocked);
+      },
+      error: (err) => console.error(err)
+    });
   }
 
   closeUnlockedLetters() {

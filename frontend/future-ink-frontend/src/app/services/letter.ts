@@ -45,6 +45,14 @@ export class LetterService {
     );
   }
 
+  /** Get unlocked letters */
+  getUnlockedLetters(): Observable<Letter[]> {
+    return this.http.get<Letter[]>(
+      'http://127.0.0.1:8000/api/letters/unlocked/',
+      { headers: this.authHeader() }
+    );
+  }
+
   /** Attach JWT token for authentication */
   private authHeader(): { [header: string]: string } {
     const token = localStorage.getItem('token');

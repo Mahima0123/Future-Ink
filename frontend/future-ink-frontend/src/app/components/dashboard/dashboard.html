@@ -11,6 +11,11 @@
         View Unlocked Letters
       </button>
 
+      <button class="view-btn locked"
+              (click)="openLockedLetters()">
+        View Locked Letters
+      </button>
+
       <div class="avatar" (click)="toggleMenu()">👤</div>
 
       <div class="dropdown" *ngIf="menuOpen">
@@ -78,15 +83,21 @@
 
           <div *ngFor="let letter of letters" class="letter-card">
 
-          <div (click)="openReflection(letter)" class="letter-preview">
-            <h3>{{ letter.title }}</h3>
+          <div
+            class="letter-preview"
+            [class.locked]="modalType === 'locked'"
+            (click)="modalType === 'unlocked' && openReflection(letter)">
+            <h3>
+              {{ letter.title }}
+              <span *ngIf="modalType === 'locked'">🔒</span>
+            </h3>
             <p>{{ letter.body }}</p>
             <span>{{ letter.unlock_at | date:'medium' }}</span>
           </div>
 
         <!-- REFLECTION PANEL -->
         <div class="reflection-panel"
-            *ngIf="selectedLetterId === letter.id">
+          *ngIf="modalType === 'unlocked' && selectedLetterId === letter.id">
 
           <h4>Your Reflection ✨</h4>
 
