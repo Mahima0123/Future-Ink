@@ -12,5 +12,8 @@ class Letter(models.Model):
     reflection = models.TextField(blank=True)
     mood = models.CharField(max_length=50, blank=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self):
         return f"{self.title or 'Untitled'} by {self.user.username}"

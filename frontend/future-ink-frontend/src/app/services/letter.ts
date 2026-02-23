@@ -37,6 +37,14 @@ export class LetterService {
     });
   }
 
+  updateLetter(id: number, data: Partial<Letter>): Observable<Letter> {
+    return this.http.patch<Letter>(
+      `${this.apiUrl}${id}/`,
+      data,
+      { headers: this.authHeader() }
+    );
+  }
+
   /** Attach JWT token for authentication */
   private authHeader(): { [header: string]: string } {
     const token = localStorage.getItem('token');

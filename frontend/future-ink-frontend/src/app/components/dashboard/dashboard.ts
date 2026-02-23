@@ -18,6 +18,9 @@ export class Dashboard {
   menuOpen = false;
   showUnlockedModal = false;
   currentView: 'write' | 'unlocked' = 'write';
+  selectedLetterId: number | null = null;
+  reflectionText = '';
+  selectedMood = '';
 
   newLetter: Partial<Letter> = {
     title: '',
@@ -98,5 +101,34 @@ export class Dashboard {
 
   showWriteView() {
     this.currentView = 'write';
+  }
+
+  openReflection(letter: Letter) {
+    this.selectedLetterId = letter.id!;
+    this.reflectionText = letter.reflection || '';
+    this.selectedMood = letter.mood || '';
+  }
+
+  closeReflection() {
+    this.selectedLetterId = null;
+  }
+
+  saveReflection(letter: Letter) {
+    if (!letter.id) return;
+
+    this.letterService.updateLetter(letter.id, {
+      reflection: this.reflectionText,
+      mood: this.selectedMood
+    }).subscribe({
+      next: (updated) => {
+        letter.reflection = updated.reflection;
+        letter.mood = updated.mood;
+        this.closeReflection();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to save reflection');
+      }
+    });
   }
 }

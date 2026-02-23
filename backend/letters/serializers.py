@@ -18,7 +18,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class LetterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Letter
-        fields = '__all__'
+        fields = [
+            "id",
+            "title",
+            "body",
+            "created_at",
+            "unlock_at",
+            "unlocked",
+            "mood",
+            "reflection",
+        ]
         read_only_fields = ['user']
 
 

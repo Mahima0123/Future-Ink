@@ -77,10 +77,43 @@
         <div class="modal-content">
 
           <div *ngFor="let letter of letters" class="letter-card">
+
+          <div (click)="openReflection(letter)" class="letter-preview">
             <h3>{{ letter.title }}</h3>
             <p>{{ letter.body }}</p>
             <span>{{ letter.unlock_at | date:'medium' }}</span>
           </div>
+
+        <!-- REFLECTION PANEL -->
+        <div class="reflection-panel"
+            *ngIf="selectedLetterId === letter.id">
+
+          <h4>Your Reflection ✨</h4>
+
+          <textarea
+            [(ngModel)]="reflectionText"
+            placeholder="How do you feel reading this now?"
+            rows="4">
+          </textarea>
+
+          <select [(ngModel)]="selectedMood">
+            <option value="">Select mood</option>
+            <option>Happy</option>
+            <option>Nostalgic</option>
+            <option>Proud</option>
+            <option>Emotional</option>
+            <option>Grateful</option>
+            <option>Surprised</option>
+          </select>
+
+          <div class="reflection-actions">
+            <button (click)="saveReflection(letter)">Save</button>
+            <button class="cancel" (click)="closeReflection()">Cancel</button>
+          </div>
+
+        </div>
+
+      </div>
 
           <p *ngIf="letters.length === 0" class="empty">
             No letters unlocked yet 🌙

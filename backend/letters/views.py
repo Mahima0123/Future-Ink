@@ -51,15 +51,31 @@ class LetterListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         now = timezone.now()
 
+        # ✅ AUTO UPDATE UNLOCK STATUS
+        Letter.objects.filter(
+            user=self.request.user,
+            unlock_at__lte=now,
+            unlocked=False
+        ).update(unlocked=True)
+
+        # ✅ RETURN ONLY LOCKED LETTERS (future letters)
         return Letter.objects.filter(
             user=self.request.user,
-            unlock_at__lte=now   # only unlocked letters
-        )
+            unlocked=False
+        ).order_by("-created_at")
 
     def perform_create(self, serializer):
-        # automatically attach logged-in user
         serializer.save(user=self.request.user)
 
+class UnlockedLettersView(generics.ListAPIView):
+    serializer_class = LetterSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Letter.objects.filter(
+            user=self.request.user,
+            unlocked=True
+        ).order_by("-unlock_at")
 
 # ---------- LETTER DETAIL ----------
 class LetterRetrieveUpdateView(generics.RetrieveUpdateAPIView):
@@ -68,3 +84,22 @@ class LetterRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return Letter.objects.filter(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        letter = self.get_object()
+        now = timezone.now()
+
+        # ✅ Auto unlock check
+        if letter.unlock_at <= now and not letter.unlocked:
+            letter.unlocked = True
+            letter.save()
+
+        # ❌ Prevent reflection/mood before unlock
+        if not letter.unlocked:
+            if "reflection" in request.data or "mood" in request.data:
+                return Response(
+                    {"error": "Letter is still locked."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+        return super().update(request, *args, **kwargs)
