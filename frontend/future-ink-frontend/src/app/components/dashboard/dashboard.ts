@@ -22,6 +22,7 @@ export class Dashboard {
   selectedLetterId: number | null = null;
   reflectionText = '';
   selectedMood = '';
+  
 
   newLetter: Partial<Letter> = {
     title: '',
@@ -75,8 +76,16 @@ export class Dashboard {
     });
   }
   logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
+    this.auth.logout().subscribe({
+      next: () => {
+        this.auth.clearSession();
+        this.router.navigate(['/login']);
+      },
+      error: () => {
+        this.auth.clearSession();
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   openUnlockedLetters() {
@@ -149,5 +158,9 @@ export class Dashboard {
         alert('Failed to save reflection');
       }
     });
+  }
+
+  goToAnalytics() {
+    this.router.navigate(['/analytics']);
   }
 }

@@ -11,6 +11,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  /* ===============================
+     ✅ Browser Safety (SSR FIX)
+  =============================== */
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined';
+  }
+
+  /* ===============================
+     REGISTER
+  =============================== */
   register(data: any): Observable<any> {
     return this.http.post(`${this.API_URL}/register/`, data);
   }
@@ -20,24 +30,32 @@ export class AuthService {
   }
 
   saveToken(access: string, refresh: string) {
-    localStorage.setItem('token', access);
-    localStorage.setItem('refresh', refresh);
+    if (!this.isBrowser()) return;
+
+    window.localStorage.setItem('token', access);
+    window.localStorage.setItem('refresh', refresh);
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  getToken(): string | null {
+    if (!this.isBrowser()) return null;
+
+    return window.localStorage.getItem('token');
   }
 
   logout(): Observable<any> {
-    const refresh = localStorage.getItem('refresh');
+    const refresh = this.isBrowser()
+      ? window.localStorage.getItem('refresh')
+      : null;
 
     return this.http.post(`${this.API_URL}/logout/`, {
       refresh: refresh
     });
   }
   clearSession() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh');
+    if (!this.isBrowser()) return;
+
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('refresh');
   }
   isLoggedIn(): boolean {
     return !!this.getToken();

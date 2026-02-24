@@ -26,15 +26,13 @@ export class LetterService {
   /** Get all letters of logged-in user */
   getLetters(): Observable<Letter[]> {
     return this.http.get<Letter[]>(this.apiUrl, {
-      headers: this.authHeader()
+      headers: this.authHeader() 
     });
   }
 
   /** Add a new letter */
   addLetter(letter: Letter): Observable<Letter> {
-    return this.http.post<Letter>(this.apiUrl, letter, {
-      headers: this.authHeader()
-    });
+    return this.http.post<Letter>(this.apiUrl, letter, { headers: this.authHeader() });
   }
 
   updateLetter(id: number, data: Partial<Letter>): Observable<Letter> {
@@ -48,14 +46,17 @@ export class LetterService {
   /** Get unlocked letters */
   getUnlockedLetters(): Observable<Letter[]> {
     return this.http.get<Letter[]>(
-      'http://127.0.0.1:8000/api/letters/unlocked/',
+      `${this.apiUrl}unlocked/`,
       { headers: this.authHeader() }
     );
   }
 
   /** Attach JWT token for authentication */
   private authHeader(): { [header: string]: string } {
-    const token = localStorage.getItem('token');
+    if (typeof window === 'undefined') {
+      return {}; // Safe for SSR / server context
+    }
+    const token = window.localStorage.getItem('token');
     if (token) {
       return { Authorization: `Bearer ${token}` };
     }

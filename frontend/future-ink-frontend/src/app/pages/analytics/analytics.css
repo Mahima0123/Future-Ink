@@ -1,0 +1,9 @@
+.analytics-page {
+  padding: 30px;
+}
+
+.chart-card {
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 16px;
+}

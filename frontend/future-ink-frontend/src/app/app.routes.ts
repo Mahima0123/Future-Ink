@@ -13,4 +13,10 @@ export const routes: Routes = [
 
   { path: 'dashboard', component: Dashboard },
   { path: 'new-letter', component: LetterForm },
+  {
+    path: 'analytics',
+    loadComponent: () =>
+      import('./pages/analytics/analytics')
+        .then(m => m.Analytics)
+  }
 ];
